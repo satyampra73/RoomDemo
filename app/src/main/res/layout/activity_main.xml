@@ -2,6 +2,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <variable
+            name="myViewModel"
+            type="com.satyam.roomdemo.viewmodel.SubscriberViewModel" />
+    </data>
     <LinearLayout
         android:id="@+id/main"
         android:layout_width="match_parent"
@@ -17,6 +22,7 @@
             android:layout_margin="15dp"
             android:layout_marginBottom="5dp"
             android:ems="10"
+            android:text="@={myViewModel.inputName}"
             android:hint="Subscriber's Name"
             android:inputType="text" />
         <EditText
@@ -28,6 +34,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:ems="10"
+            android:text="@={myViewModel.inputEmail}"
             android:hint="Subscriber's Email"
             android:inputType="text" />
 
@@ -41,18 +48,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Button" />
+                android:onClick="@{()->myViewModel.saveOrUpdate()}"
+                android:text="@={myViewModel.saveOrUpdateButtonText}" />
 
             <Button
                 android:id="@+id/clear_all_or_delete_all_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Button" />
+                android:onClick="@{()->myViewModel.clearAllOrDelete()"
+                android:text="@={myViewModel.clearAllOrDeleteButtonText}" />
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/subscriber_recyclerView"
             android:layout_width="match_parent"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
             android:layout_height="match_parent" />
     </LinearLayout>
 </layout>
