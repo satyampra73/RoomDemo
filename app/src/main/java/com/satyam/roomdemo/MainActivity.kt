@@ -9,6 +9,8 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.satyam.roomdemo.adapter.MyRecyclerViewAdapter
 import com.satyam.roomdemo.databinding.ActivityMainBinding
 import com.satyam.roomdemo.room.SubscriberDatabase
 import com.satyam.roomdemo.room.SubscriberRepository
@@ -28,12 +30,17 @@ class MainActivity : AppCompatActivity() {
 
         binding.myViewModel = subscriberViewModel
         binding.lifecycleOwner = this
-        displaySubscribersList()
+        initRecyclerView()
     }
 
+    private fun initRecyclerView(){
+        binding.subscriberRecyclerView.layoutManager =LinearLayoutManager(this)
+        displaySubscribersList()
+    }
     private fun displaySubscribersList(){
         subscriberViewModel.subscribers.observe(this, Observer {
             Log.i("MYTAG",it.toString())
+            binding.subscriberRecyclerView.adapter = MyRecyclerViewAdapter(it)
         })
     }
 }
