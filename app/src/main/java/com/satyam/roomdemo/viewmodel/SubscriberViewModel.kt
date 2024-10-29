@@ -50,4 +50,9 @@ class SubscriberViewModel(private val repository: SubscriberRepository) : ViewMo
     fun clearAll()= viewModelScope.launch(Dispatchers.IO) {
         repository.deleteAll()
     }
+
+    fun initUpdateAndDelete(subscriber: Subscriber){
+        inputName.value = subscriber.name
+        inputEmail.value = subscriber.email
+    }
 }

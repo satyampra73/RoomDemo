@@ -2,6 +2,7 @@ package com.satyam.roomdemo
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -12,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.satyam.roomdemo.adapter.MyRecyclerViewAdapter
 import com.satyam.roomdemo.databinding.ActivityMainBinding
+import com.satyam.roomdemo.room.Subscriber
 import com.satyam.roomdemo.room.SubscriberDatabase
 import com.satyam.roomdemo.room.SubscriberRepository
 import com.satyam.roomdemo.viewmodel.SubscriberViewModel
@@ -40,7 +42,11 @@ class MainActivity : AppCompatActivity() {
     private fun displaySubscribersList(){
         subscriberViewModel.subscribers.observe(this, Observer {
             Log.i("MYTAG",it.toString())
-            binding.subscriberRecyclerView.adapter = MyRecyclerViewAdapter(it)
+            binding.subscriberRecyclerView.adapter = MyRecyclerViewAdapter(it,{selectedItem : Subscriber->listItemClicked(selectedItem)})
         })
+    }
+
+    private fun listItemClicked(subscriber: Subscriber){
+        Toast.makeText(this,"selected name is ${subscriber.name}",Toast.LENGTH_SHORT).show()
     }
 }
