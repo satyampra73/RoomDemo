@@ -7,9 +7,12 @@ import com.satyam.roomdemo.room.Subscriber
 import com.satyam.roomdemo.room.SubscriberRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SubscriberViewModel(private val repository: SubscriberRepository) : ViewModel() {
 
+    private var isUpdateOrDelete = false
+    private lateinit var subscriberToUpdateOrDelete : Subscriber
     val subscribers = repository.subscribers
     val inputName = MutableLiveData<String>()
     val inputEmail = MutableLiveData<String>()
@@ -30,7 +33,12 @@ class SubscriberViewModel(private val repository: SubscriberRepository) : ViewMo
 
     }
     fun clearAllOrDelete(){
-        clearAll()
+        if(isUpdateOrDelete){
+            delete(subscriberToUpdateOrDelete)
+        }
+        else{
+            clearAll()
+        }
     }
 
     fun insert(subscriber: Subscriber)= viewModelScope.launch(Dispatchers.IO) {
@@ -45,6 +53,9 @@ class SubscriberViewModel(private val repository: SubscriberRepository) : ViewMo
 
     fun delete(subscriber: Subscriber)= viewModelScope.launch(Dispatchers.IO) {
         repository.delete(subscriber)
+        withContext(Dispatchers.Main){
+
+        }
     }
 
     fun clearAll()= viewModelScope.launch(Dispatchers.IO) {
@@ -54,5 +65,9 @@ class SubscriberViewModel(private val repository: SubscriberRepository) : ViewMo
     fun initUpdateAndDelete(subscriber: Subscriber){
         inputName.value = subscriber.name
         inputEmail.value = subscriber.email
+        isUpdateOrDelete =true
+        subscriberToUpdateOrDelete = subscriber
+        saveOrUpdateButtonText.value = "Update"
+        clearAllOrDeleteButtonText.value="Delete"
     }
 }
